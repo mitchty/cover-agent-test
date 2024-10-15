@@ -1,0 +1,65 @@
+diff --git a/core/hatch.py b/core/hatch.py
+index ece6ce13f..4aaa5a43c 100644
+--- a/core/hatch.py
++++ b/core/hatch.py
+@@ -43,24 +43,34 @@ def build_wandb_core(
+ 
+     # We have to invoke Go from the directory with go.mod, hence the
+     # paths relative to ./core
+-    subprocess.check_call(
+-        [
+-            str(go_binary),
+-            "build",
+-            *coverage_flags,
+-            *race_detect_flags,
+-            *ld_flags,
+-            *output_flags,
+-            *vendor_flags,
+-            str(pathlib.Path("cmd", "wandb-core", "main.go")),
+-        ],
+-        cwd="./core",
+-        env=_go_env(
+-            with_race_detection=with_race_detection,
+-            target_system=target_system,
+-            target_arch=target_arch,
+-        ),
+-    )
++    try:
++        wtf=subprocess.run(
++            [
++                str(go_binary),
++                "build",
++                *coverage_flags,
++                *race_detect_flags,
++                *ld_flags,
++                *output_flags,
++                *vendor_flags,
++                str(pathlib.Path("cmd", "wandb-core", "main.go")),
++            ],
++            cwd="./core",
++            env=_go_env(
++                with_race_detection=with_race_detection,
++                target_system=target_system,
++                target_arch=target_arch,
++            ),
++            capture_output=True,
++            check=True,
++        )
++    except Exception as e:
++        print("WTF\n")
++        print(e.stderr)
++        print(e.stdout)
++        print("\nWTF ENDS\n")
++        raise e
++
+ 
+ 
+ def _go_linker_flags(wandb_commit_sha: Optional[str]) -> str:
+@@ -85,6 +95,7 @@ def _go_env(
+ 
+     env["GOOS"] = target_system
+     env["GOARCH"] = target_arch
++    env["GOCACHE"] = "/tmp"
+ 
+     env["CGO_ENABLED"] = "0"
+     if with_race_detection:

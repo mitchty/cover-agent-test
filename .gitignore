@@ -1,0 +1,9 @@
+.result
+run.log
+test_results.html
+testLog.xml
+__pycache__
+.coverage
+cover_agent_unit_test_runs.db
+coverage.xml
+result
