@@ -17,5 +17,5 @@ OPENAI_API_KEY='' cover-agent \
   --desired-coverage 80 \
   --max-iterations 100 \
   --model ollama/${MODEL:-llama3.2} \
-  --api-base http://${OLLAMA_HOST}:11434 \
+  --api-base http://${OLLAMA_HOST:-localhost}:11434 \
   --additional-instructions "Since I am using a test class, each line of code (including the first line) needs to be prepended with 4 whitespaces. This is extremely important to ensure that every line returned contains that 4 whitespace indent; otherwise, my code will not run. Ensure that all code is indented by 4 whitespaces."
