@@ -63,12 +63,12 @@
         rec {
           python = pkgs.python311;
           pname = "cover-agent";
-          version = "0.2.2";
+          version = "0.2.6";
           src = nixpkgs.legacyPackages.${system}.fetchFromGitHub rec {
             owner = "Codium-ai";
             repo = pname;
             rev = "refs/tags/${version}";
-            hash = "sha256-KG2l5UyFuf/utuPwnbTCr4zwg7CL1ELFn5EQU2lii0A=";
+            hash = "sha256-ekYZFzHQof9xmBbI6eTmUtIZ6g2pbl8G24qHvCbLjOQ=";
           };
           pyproject = "${src}/pyproject.toml";
           poetrylock = "${src}/poetry.lock";
@@ -104,6 +104,15 @@
                 preferWheel = true;
               };
               wandb = super.wandb.override {
+                preferWheel = true;
+              };
+              rpds-py = super.rpds-py.override {
+                preferWheel = true;
+              };
+              propcache = super.propcache.override {
+                preferWheel = true;
+              };
+              grep-ast = super.grep-ast.override {
                 preferWheel = true;
               };
               # jiter = pkgs.python311Packages.jiter;
